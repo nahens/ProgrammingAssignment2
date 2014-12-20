@@ -1,15 +1,67 @@
-## Put comments here that give an overall description of what your
-## functions do
+# makeCacheMatrix function returns a list of functions
+# 
+# *  The makeCacheMatrix function creates a matrix or returns the matrix via the following functions:
+# * setMat      	set the value of a matrix
+# * getMat      	get the value of a matrix
 
-## Write a short comment describing this function
+# * The below functions performs the Inverse or returns the cached Matrix
+# * cacheInverse   	
+# * getInverse     	
+#
+# 
+# makeCacheMatrixfunction
+makeCacheMatrix <- function(x = numeric()) {
+        
+        # stores the cached value or NULL if not cached yet
+        # initially value is NULL
 
-makeCacheMatrix <- function(x = matrix()) {
+        cache <- NULL
+        
+        # store a matrix
+        setMat <- function(newValue) {
+                x <<- newValue
+                # since the matrix is assigned a new value, flush the cache
+                cache <<- NULL
+        }
 
+        # returns the stored matrix
+        getMat <- function() {
+                x
+        }
+
+        # cache the given argument 
+        cacheInverse <- function(solve) {
+                cache <<- solve
+        }
+
+        # get the cached value
+        getInverse <- function() {
+                cache
+        }
+        
+        # return a list. Each named element of the list is a function
+        list(setMat = setMat, getMat = getMat, cacheInverse = cacheInverse, getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+# The following function calculates the inverse of a "special" matrix created with 
+# makeCacheMatrix
+cacheSolve <- function(y, ...) {
+        # get the cached value
+        inverse <- y$getInverse()
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        # Check if the cached value exists; if so then return the cached matrix
+        if(!is.null(inverse)) {
+                message("Retrieving the cached data")
+                return(inverse)
+        }
+
+        # caclulate the inverse and cache it
+
+        data <- y$getMat()
+        inverse <- solve(data)
+        y$cacheInverse(inverse)
+        
+        # return the inverse
+        inverse
 }
