@@ -9,7 +9,7 @@
 # * getInverse     	
 #  
 # 
-# makeCacheMatrixfunction
+# makeCacheMatrix function
 makeCacheMatrix <- function(x = numeric()) {
         
         # stores the cached value or NULL if not cached yet
